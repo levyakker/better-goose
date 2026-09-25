@@ -37,6 +37,10 @@ const i18n = defineMessages({
     id: 'onboardingGuard.retry',
     defaultMessage: 'Retry',
   },
+  checkingProvider: {
+    id: 'acpReadinessPanel.checking',
+    defaultMessage: 'Checking...',
+  },
 });
 
 const TELEMETRY_CONFIG_KEY = 'GOOSE_TELEMETRY_ENABLED';
@@ -106,7 +110,12 @@ export default function OnboardingGuard({ children }: OnboardingGuardProps) {
   }, []);
 
   useEffect(() => {
-    if (!isCheckingProvider && !hasProvider && !checkProviderError && !hasTrackedOnboardingStart.current) {
+    if (
+      !isCheckingProvider &&
+      !hasProvider &&
+      !checkProviderError &&
+      !hasTrackedOnboardingStart.current
+    ) {
       trackOnboardingStarted();
       hasTrackedOnboardingStart.current = true;
     }
@@ -142,7 +151,15 @@ export default function OnboardingGuard({ children }: OnboardingGuardProps) {
   };
 
   if (isCheckingProvider) {
-    return null;
+    return (
+      <div
+        className="h-screen w-full bg-background-default flex flex-col items-center justify-center gap-4"
+        role="status"
+      >
+        <Goose className="size-8" />
+        <p className="text-text-muted">{intl.formatMessage(i18n.checkingProvider)}</p>
+      </div>
+    );
   }
 
   if (checkProviderError) {
@@ -152,11 +169,13 @@ export default function OnboardingGuard({ children }: OnboardingGuardProps) {
           <div className="mb-4">
             <Goose className="size-8 mx-auto" />
           </div>
-          <h1 className="text-xl font-light mb-3">{intl.formatMessage(i18n.checkProviderErrorTitle)}</h1>
-          <p className="text-text-muted mb-6">{intl.formatMessage(i18n.checkProviderErrorDescription)}</p>
-          <Button onClick={() => checkProvider()}>
-            {intl.formatMessage(i18n.retry)}
-          </Button>
+          <h1 className="text-xl font-light mb-3">
+            {intl.formatMessage(i18n.checkProviderErrorTitle)}
+          </h1>
+          <p className="text-text-muted mb-6">
+            {intl.formatMessage(i18n.checkProviderErrorDescription)}
+          </p>
+          <Button onClick={() => checkProvider()}>{intl.formatMessage(i18n.retry)}</Button>
         </div>
       </div>
     );
@@ -185,7 +204,9 @@ export default function OnboardingGuard({ children }: OnboardingGuardProps) {
               <div className="mb-4">
                 <Goose className="size-8" />
               </div>
-              <h1 className="text-2xl sm:text-4xl font-light mb-3">{intl.formatMessage(i18n.welcomeTitle)}</h1>
+              <h1 className="text-2xl sm:text-4xl font-light mb-3">
+                {intl.formatMessage(i18n.welcomeTitle)}
+              </h1>
               <p className="text-text-muted text-base sm:text-lg">
                 {intl.formatMessage(i18n.welcomeDescription)}
               </p>
