@@ -135,9 +135,11 @@ export default function ProviderSelector({
     <div>
       <div className={`grid ${localInference ? 'grid-cols-2' : 'grid-cols-1'} gap-3 mb-6`}>
         {localInference && (
-          <div
+          <button
+            type="button"
             onClick={handleLocalModelClick}
-            className={`p-4 border rounded-xl transition-all duration-200 cursor-pointer group ${
+            aria-pressed={selectedPath === LOCAL_MODEL}
+            className={`w-full text-left p-4 border rounded-xl transition-all duration-200 cursor-pointer group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${
               selectedPath === LOCAL_MODEL
                 ? 'border-blue-400 bg-background-muted'
                 : 'border-border-default bg-background-muted hover:border-blue-400'
@@ -150,12 +152,14 @@ export default function ProviderSelector({
             <p className="text-text-muted text-sm mt-1">
               {intl.formatMessage(i18n.localModelDescription)}
             </p>
-          </div>
+          </button>
         )}
 
-        <div
+        <button
+          type="button"
           onClick={handleOwnProviderClick}
-          className={`p-4 border rounded-xl transition-all duration-200 cursor-pointer group ${
+          aria-pressed={selectedPath === OWN_PROVIDER}
+          className={`w-full text-left p-4 border rounded-xl transition-all duration-200 cursor-pointer group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${
             selectedPath === OWN_PROVIDER
               ? 'border-blue-400 bg-background-muted'
               : 'border-border-default bg-background-muted hover:border-blue-400'
@@ -168,7 +172,7 @@ export default function ProviderSelector({
           <p className="text-text-muted text-sm mt-1">
             {intl.formatMessage(i18n.connectProviderDescription)}
           </p>
-        </div>
+        </button>
       </div>
 
       {localInference && selectedPath === LOCAL_MODEL && (
